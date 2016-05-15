@@ -19,6 +19,8 @@ import urllib2
 
 glob_flag = False
 
+exit_dict = {'庞广德': 1}
+
 def wait_for_ESC():
     while True:
         if cv2.waitKey(10)==27:
@@ -89,7 +91,7 @@ def getCam():
             save_name = "./img/cut.jpg"
             cv2.imwrite(save_name, img) 
             name = upload_and_reco(save_name)
-            if name.find(u'\u5e9e\u5e7f\u5fb7') > -1:
+            if exit_dict.get(name, 0) == 1:
                 break
         # cv2.imshow(window_name, image)
         # if cv2.waitKey(5) == 27:
