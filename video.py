@@ -29,7 +29,7 @@ def upload_and_reco(filename):
     # qiniuHelper = QiNiuHelper('test')
     # url = qiniuHelper.upload_img(filename)
     recoHelper = RecoHelper()
-    recoHelper.recognize(filename, 'family')
+    return recoHelper.recognize(filename, 'family')
 
 def getCam():  
     # window_name='show image'
