@@ -144,7 +144,7 @@ class RecoHelper(object):
         result = self.api.recognition.recognize(img = File(r'%s' % file_name), group_name = group_name)
         # print_result('Recognize result:', result)
         if len(result['face']) == 0:
-            os.system('say "no face in the picture"')
+            print '[DEBUG] %s| no face in the picture' % datetime.datetime.now()
         else:
             if result['face'][0]['candidate'][0]['confidence'] >= 15:
                 print '[DEBUG] %s| The person with highest confidence: %s, %s' % (datetime.datetime.now(), result['face'][0]['candidate'][0]['person_name'], result['face'][0]['candidate'][0]['confidence'])
@@ -156,15 +156,13 @@ class RecoHelper(object):
             # # 最终，删除无用的person和group
             print '[DEBUG] %s| recognize done' % datetime.datetime.now()
 
-            # os.system('say "welcome!!!"')
             name = name_map.get(result['face'][0]['candidate'][0]['person_name'], 'stranger')
             print name
             my_cmd = ''
             if name == 'stranger':
-                my_cmd = 'say "stranger"'
+                print '[DEBUG] %s| stranger' % datetime.datetime.now()
             else:
-                my_cmd = ('say "Hello!!!%s"' % name) 
-            os.system(my_cmd)
+                '[DEBUG] %s| Hello!!!%s' % (datetime.datetime.now(), name)
             # self.welcome(name, file_name)
             
     def set_target(self, target_url):

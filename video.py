@@ -8,8 +8,14 @@ import numpy as np
 from facepp import File
 import datetime, time
 import thread
+from picamera import PiCamera
+from picamera.array import PiRGBArray
 
 from tornado.httpclient import AsyncHTTPClient
+
+from poster.encode import multipart_encode
+from poster.streaminghttp import register_openers
+import urllib2
 
 glob_flag = False
 
@@ -26,36 +32,52 @@ def upload_and_reco(filename):
     recoHelper.recognize(filename, 'family')
 
 def getCam():  
-    window_name='show image' 
+    # window_name='show image'
     http_client = AsyncHTTPClient()
 
     face_cascade = cv2.CascadeClassifier('/Users/pangguangde/Downloads/opencv-3.0.0/data/haarcascades/haarcascade_frontalface_default.xml')
-    cv2.namedWindow(window_name,cv2.WINDOW_NORMAL)  
-    cv2.resizeWindow(window_name, 1920, 1080)
-    video_cap_obj=cv2.VideoCapture(0)  
-    if video_cap_obj==None:  
-        print('video caoture error')  
-    if video_cap_obj.open(0)==False:  
-        print('open error') 
-    retval,image=video_cap_obj.read() 
+    # cv2.namedWindow(window_name,cv2.WINDOW_NORMAL)
+    # cv2.resizeWindow(window_name, 1920, 1080)
+    # video_cap_obj=cv2.VideoCapture(0)
+    # if video_cap_obj==None:
+    #     print('video caoture error')
+    # if video_cap_obj.open(0)==False:
+    #     print('open error')
+    # retval,image=video_cap_obj.read()
     
     # thread.start_new_thread(wait_for_ESC, ())
+    camera = PiCamera()
     while True:
-        if glob_flag:  
-            break  
-        retval,image=video_cap_obj.read()  
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(
-            gray,
-            scaleFactor=1.15,
-            minNeighbors=5,
-            minSize=(5,5),
-            flags=cv2.CASCADE_SCALE_IMAGE 
-        ) 
+        # if glob_flag:
+        #     break
+        # retval,image=video_cap_obj.read()
+        rawCapture = PiRGBArray(camera)
+        camera.capture(rawCapture, format="bgr")
+        image = rawCapture.array
+        cv2.imwrite("./img/tmp.jpg", image)
+
+        register_openers()
+        print datetime.datetime.now()
+        datagen, headers = multipart_encode({"file": open("./img/tmp.jpg", "rb")})
+
+        request = urllib2.Request("http://192.168.0.108:5000/upload_image", datagen, headers)
+        resp = urllib2.urlopen(request)
+
+        face_num = resp.read().get('face_num', 0)
+        print resp.read()
+        print datetime.datetime.now()
+
+        # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # faces = face_cascade.detectMultiScale(
+        #     gray,
+        #     scaleFactor=1.15,
+        #     minNeighbors=5,
+        #     minSize=(5,5),
+        #     flags=cv2.CASCADE_SCALE_IMAGE
+        # )
         
         
-        if len(faces) > 0:  
-            os.system('say "I have read your face, uploading..."')
+        if face_num > 0:
             print '[DEBUG] %s| I have read your face, uploading...' % datetime.datetime.now()
             cv2.imwrite("./img/cut_1.jpg", image) 
             img = image
@@ -71,10 +93,10 @@ def getCam():
         # if cv2.waitKey(5) == 27:
         #     break
         
-    video_cap_obj.release() 
-    cv2.waitKey()
+    # video_cap_obj.release()
+    # cv2.waitKey()
     # retval,image=video_cap_obj.read() 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     # video_cap_obj.release() 
     # th.join() 
       
