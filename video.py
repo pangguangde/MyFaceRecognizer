@@ -33,9 +33,9 @@ def upload_and_reco(filename):
 
 def getCam():  
     # window_name='show image'
-    http_client = AsyncHTTPClient()
+    # http_client = AsyncHTTPClient()
 
-    face_cascade = cv2.CascadeClassifier('/Users/pangguangde/Downloads/opencv-3.0.0/data/haarcascades/haarcascade_frontalface_default.xml')
+    # face_cascade = cv2.CascadeClassifier('/Users/pangguangde/Downloads/opencv-3.0.0/data/haarcascades/haarcascade_frontalface_default.xml')
     # cv2.namedWindow(window_name,cv2.WINDOW_NORMAL)
     # cv2.resizeWindow(window_name, 1920, 1080)
     # video_cap_obj=cv2.VideoCapture(0)
