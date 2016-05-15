@@ -11,7 +11,7 @@ import thread
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 
-from tornado.httpclient import AsyncHTTPClient
+# from tornado.httpclient import AsyncHTTPClient
 
 from poster.encode import multipart_encode
 from poster.streaminghttp import register_openers
