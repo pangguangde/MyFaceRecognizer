@@ -1,6 +1,6 @@
 import cv2  
 import threading
-from qiniu_test import QiNiuHelper
+# from qiniu_test import QiNiuHelper
 from facepp import API
 from hello import RecoHelper
 import os
