@@ -63,8 +63,9 @@ def getCam():
         request = urllib2.Request("http://192.168.0.108:5000/upload_image", datagen, headers)
         resp = urllib2.urlopen(request)
 
-        face_num = resp.read().get('face_num', 0)
-        print resp.read()
+        ret = resp.read()
+        face_num = eval(ret).get('face_num', 0)
+        print ret
         print datetime.datetime.now()
 
         # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
