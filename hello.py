@@ -145,7 +145,7 @@ class RecoHelper(object):
         # print_result('Recognize result:', result)
         if len(result['face']) == 0:
             print '[DEBUG] %s| no face in the picture' % datetime.datetime.now()
-            return ''
+            return ' '
         else:
             if result['face'][0]['candidate'][0]['confidence'] >= 15:
                 print '[DEBUG] %s| The person with highest confidence: %s, %s' % (datetime.datetime.now(), result['face'][0]['candidate'][0]['person_name'], result['face'][0]['candidate'][0]['confidence'])
