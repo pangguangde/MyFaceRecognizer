@@ -145,6 +145,7 @@ class RecoHelper(object):
         # print_result('Recognize result:', result)
         if len(result['face']) == 0:
             print '[DEBUG] %s| no face in the picture' % datetime.datetime.now()
+            return ''
         else:
             if result['face'][0]['candidate'][0]['confidence'] >= 15:
                 print '[DEBUG] %s| The person with highest confidence: %s, %s' % (datetime.datetime.now(), result['face'][0]['candidate'][0]['person_name'], result['face'][0]['candidate'][0]['confidence'])
@@ -163,6 +164,7 @@ class RecoHelper(object):
                 print '[DEBUG] %s| stranger' % datetime.datetime.now()
             else:
                 '[DEBUG] %s| Hello!!!%s' % (datetime.datetime.now(), name)
+            return name
             # self.welcome(name, file_name)
             
     def set_target(self, target_url):

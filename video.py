@@ -57,7 +57,7 @@ def getCam():
         image = rawCapture.array
         cv2.imwrite("./img/tmp.jpg", image)
 
-        print datetime.datetime.now()
+        print '[DEBUG] %s| scanning...' % datetime.datetime.now()
         datagen, headers = multipart_encode({"file": open("./img/tmp.jpg", "rb")})
 
         request = urllib2.Request("http://192.168.0.108:5000/upload_image", datagen, headers)
@@ -65,8 +65,8 @@ def getCam():
 
         ret = resp.read()
         face_num = eval(ret).get('face_num', 0)
-        print ret
-        print datetime.datetime.now()
+        # print ret
+        # print datetime.datetime.now()
 
         # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # faces = face_cascade.detectMultiScale(
@@ -88,8 +88,9 @@ def getCam():
             img = img+mean*1.6
             save_name = "./img/cut.jpg"
             cv2.imwrite(save_name, img) 
-            upload_and_reco(save_name)
-            break
+            name = upload_and_reco(save_name)
+            if name.find(u'\u5e9e\u5e7f\u5fb7') > -1:
+                break
         # cv2.imshow(window_name, image)
         # if cv2.waitKey(5) == 27:
         #     break
