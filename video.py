@@ -47,6 +47,7 @@ def getCam():
     
     # thread.start_new_thread(wait_for_ESC, ())
     camera = PiCamera()
+    register_openers()
     while True:
         # if glob_flag:
         #     break
@@ -56,7 +57,6 @@ def getCam():
         image = rawCapture.array
         cv2.imwrite("./img/tmp.jpg", image)
 
-        register_openers()
         print datetime.datetime.now()
         datagen, headers = multipart_encode({"file": open("./img/tmp.jpg", "rb")})
 
